@@ -15,6 +15,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mCurrentPos: Int = 1
     private var mQuestionList: ArrayList<Question>? = null
     private var mSelectOptionPos: Int = 0
+    private var mCorrectAnswers: Int = 0
     private lateinit var btnSub: Button
     private lateinit var prgBar: ProgressBar
     private lateinit var tvprog: TextView
@@ -112,6 +113,8 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                     val question = mQuestionList?.get(mCurrentPos-1)
                     if(question!!.correctAnswer!=mSelectOptionPos){
                         viewAnswer(mSelectOptionPos, R.drawable.wrong_option_border_bg)
+                    }else{
+                        mCorrectAnswers ++
                     }
                     viewAnswer(question.correctAnswer, R.drawable.correct_option_border_bg)
                     if(mCurrentPos == mQuestionList!!.size){
