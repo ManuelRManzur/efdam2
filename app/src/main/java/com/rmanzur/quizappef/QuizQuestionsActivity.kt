@@ -1,5 +1,6 @@
 package com.rmanzur.quizappef
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.media.Image
@@ -16,6 +17,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     private var mQuestionList: ArrayList<Question>? = null
     private var mSelectOptionPos: Int = 0
     private var mCorrectAnswers: Int = 0
+    private var mUsername: String? = null
     private lateinit var btnSub: Button
     private lateinit var prgBar: ProgressBar
     private lateinit var tvprog: TextView
@@ -29,6 +31,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+        mUsername = intent.getStringExtra(Constants.USERNAME)
         btnSub = findViewById<Button>(R.id.btn_submit)
         prgBar = findViewById<ProgressBar>(R.id.progressBar)
         tvprog = findViewById<TextView>(R.id.tv_progress)
@@ -106,7 +109,11 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                         mCurrentPos<=mQuestionList!!.size -> {
                             setQuestion()
                         }else ->{
-                            Toast.makeText(this,"Has terminado el cuestionario",Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, ResultActivity::class.java)
+                            intent.putExtra(Constants.USERNAME, mUsername)
+                            intent.putExtra(Constants.CORRECTANSWERS, mCorrectAnswers)
+                            intent.putExtra(Constants.TOTALQUESTIONS, mQuestionList!!.size)
+                            startActivity(intent)
                         }
                     }
                 }else{

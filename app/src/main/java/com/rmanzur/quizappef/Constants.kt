@@ -1,6 +1,11 @@
 package com.rmanzur.quizappef
 
 object Constants {
+
+    const val USERNAME: String = "username"
+    const val TOTALQUESTIONS: String = "totalquestions"
+    const val CORRECTANSWERS: String = "correctanswers"
+
     fun getQuestions(): ArrayList<Question>{
         val questionsList = ArrayList<Question>()
         val q1 = Question(1,
