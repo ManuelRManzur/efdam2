@@ -54,6 +54,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setQuestion(){
 
+        enableAnswers()
         val question = mQuestionList!![mCurrentPos-1]
 
         defaultOptionsView()
@@ -88,6 +89,20 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun disableAnswers(){
+        tvop1.isEnabled = false
+        tvop2.isEnabled = false
+        tvop3.isEnabled = false
+        tvop4.isEnabled = false
+    }
+
+    private fun enableAnswers(){
+        tvop1.isEnabled = true
+        tvop2.isEnabled = true
+        tvop3.isEnabled = true
+        tvop4.isEnabled = true
+    }
+
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.tv_option_one ->{
@@ -103,6 +118,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
                 selectedOptionsView(tvop4, 4)
             }
             R.id.btn_submit ->{
+                disableAnswers()
                 if(mSelectOptionPos==0){
                     mCurrentPos ++
                     when{

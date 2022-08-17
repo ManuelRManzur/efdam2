@@ -3,7 +3,9 @@ package com.rmanzur.quizappef
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
 import android.view.View
+
 import android.widget.Button
 import android.widget.TextView
 
@@ -12,8 +14,10 @@ class ResultActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result)
 
+
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+
 
         val btnFn = findViewById<Button>(R.id.btn_finish)
         val tvName = findViewById<TextView>(R.id.tv_name)
