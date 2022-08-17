@@ -7,16 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 
 class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
-    private var mCurrentPos: Int = 0
+    private var mCurrentPos: Int = 1
     private var mQuestionList: ArrayList<Question>? = null
     private var mSelectOptionPos: Int = 0
+    private lateinit var btnSub: Button
     private lateinit var prgBar: ProgressBar
     private lateinit var tvprog: TextView
     private lateinit var tvquest: TextView
@@ -29,6 +28,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_questions)
+        btnSub = findViewById<Button>(R.id.btn_submit)
         prgBar = findViewById<ProgressBar>(R.id.progressBar)
         tvprog = findViewById<TextView>(R.id.tv_progress)
         tvquest = findViewById<TextView>(R.id.tv_question)
@@ -38,28 +38,27 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         tvop3 = findViewById<TextView>(R.id.tv_option_three)
         tvop4 = findViewById<TextView>(R.id.tv_option_four)
         mQuestionList = Constants.getQuestions()
-        setQuestion(prgBar,tvprog,tvquest,ivimg,tvop1,tvop2,tvop3,tvop4)
+        setQuestion()
 
         tvop1.setOnClickListener(this)
         tvop2.setOnClickListener(this)
         tvop3.setOnClickListener(this)
         tvop4.setOnClickListener(this)
 
+        btnSub.setOnClickListener(this)
     }
 
-    private fun setQuestion(prgBar:ProgressBar,
-                            tvprog:TextView,
-                            tvquest:TextView,
-                            ivimg: ImageView,
-                            tvop1: TextView,
-                            tvop2: TextView,
-                            tvop3: TextView,
-                            tvop4: TextView
-    ){
-        mCurrentPos = 1
+    private fun setQuestion(){
+
         val question = mQuestionList!![mCurrentPos-1]
 
         defaultOptionsView()
+
+        if(mCurrentPos==mQuestionList!!.size){
+            btnSub.text="Terminar"
+        }else{
+            btnSub.text="Confirmar"
+        }
 
         prgBar.progress = mCurrentPos
         tvprog.text = "$mCurrentPos" + "/" + prgBar.max
@@ -98,6 +97,51 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.tv_option_four ->{
                 selectedOptionsView(tvop4, 4)
+            }
+            R.id.btn_submit ->{
+                if(mSelectOptionPos==0){
+                    mCurrentPos ++
+                    when{
+                        mCurrentPos<=mQuestionList!!.size -> {
+                            setQuestion()
+                        }else ->{
+                            Toast.makeText(this,"Has terminado el cuestionario",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }else{
+                    val question = mQuestionList?.get(mCurrentPos-1)
+                    if(question!!.correctAnswer!=mSelectOptionPos){
+                        viewAnswer(mSelectOptionPos, R.drawable.wrong_option_border_bg)
+                    }
+                    viewAnswer(question.correctAnswer, R.drawable.correct_option_border_bg)
+                    if(mCurrentPos == mQuestionList!!.size){
+                        btnSub.text = "Terminar"
+                    }else{
+                        btnSub.text = "Siguiente pregunta"
+                    }
+                    mSelectOptionPos = 0
+                }
+            }
+        }
+    }
+
+    private fun viewAnswer(answer: Int, drawableView: Int){
+        when(answer){
+            1 ->{
+                tvop1.background = ContextCompat.getDrawable(this,
+                drawableView)
+            }
+            2 ->{
+                tvop2.background = ContextCompat.getDrawable(this,
+                    drawableView)
+            }
+            3 ->{
+                tvop3.background = ContextCompat.getDrawable(this,
+                    drawableView)
+            }
+            4 ->{
+                tvop4.background = ContextCompat.getDrawable(this,
+                    drawableView)
             }
         }
     }
